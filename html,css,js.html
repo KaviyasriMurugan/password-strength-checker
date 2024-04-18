@@ -1,0 +1,199 @@
+<html>
+<head>
+    <title>Password Strength Checker</title>
+    <style type="text/css">
+        body {
+  background: #cccccc;
+  text-align: center;
+  color: #000;
+  font-family: serif;
+}
+
+h1 {
+  text-shadow: 0 3px 5px rgba(255, 255, 255, 0.8);
+}
+
+h1:hover {
+  color: green;
+}
+
+form {
+  border: 5px solid #fff;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 50px;
+}
+#container {
+  height: 100px;
+}
+input {
+  height: 20px;
+  width: 300px;
+  border-radius: 5px;
+  padding: 5px 20px;
+  font-size: 16px;
+  border: #cccccc;
+}
+input:focus {
+  outline: none;
+  box-shadow: 1px 2px 5px 
+  3px;
+}
+
+input::placeholder {
+  padding: 5px;
+  text-align: center;
+  color: #cccccc;
+}
+
+div {
+  margin-top: 10px;
+}
+div.progress {
+  border: 1px solid #efefef;
+  border-radius: 5px;
+  width: 240px;
+  height: 5px;
+  display: inline-block;
+  text-align: left;
+  padding: 2px;
+  display: none;
+}
+div div.progressBar {
+  width: 50px;
+  height: 100%;
+  margin-top: 0;
+  transition-timing-function: ease-out;
+  transition: 3s;
+}
+span#percent {
+  color: transparent;
+}
+button {
+  width: 200px;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 2px;
+  margin-top: 3%;
+  outline: none;
+  cursor: pointer;
+}
+button:hover {
+  outline: none;
+  box-shadow: 1px 1px 0px 3px;
+  background-color: grey;
+}
+    </style>
+</head>
+<body>
+    <h1>PASSWORD STRENGTH APPLICATION</h1>
+    <form>
+        <div id="container">
+            <input id="input" type="password" name="Password" placeholder="Please input a password"><br>
+            <div class="progress">
+                <div class="progressBar"></div>
+            </div>
+            
+            <div>
+                <span id="inputLen"></span><br>
+                <span id="percent"></span>
+            </div>
+        </div>
+            <button type="submit">Check Strength</button>
+    </form>
+    <script>
+        const passwordLength = () => {
+    let inputVal = document.querySelector('#input').value;
+    const inputLen = document.querySelector('#inputLen');
+    document.querySelector('#percent').style.color = 'transparent';
+
+    if (inputVal.includes(' ')){
+        inputLen.innerHTML  = 'Whitespaces are not allowed';
+        document.querySelector('.progress').style.display = 'none'
+         return;
+     }
+
+     if (inputVal.length === 0) {
+         inputLen.innerHTML = '';
+         document.querySelector('.progress').style.display = 'none';
+         return;
+     }
+
+    if (inputVal.length < 6) {
+        inputLen.innerHTML = 'Minimum password length is 6';
+        document.querySelector('.progress').style.display = 'none'
+        return;
+    }
+
+    if (inputVal.length >= 6) {
+        inputLen.innerHTML = '';
+        document.querySelector('.progress').style.display = 'inline-block';
+    }
+
+    if(inputVal.length > 12) {
+        inputLen.innerHTML = 'Maximum password length is 12';
+        document.querySelector('.progress').style.display = 'none'
+        return
+    }
+
+    const lower = /[a-z]/.test(inputVal);
+    const upper = /[A-Z]/.test(inputVal);
+    const digit = /[0-9]/.test(inputVal);
+    const specialChar = /[$@#&!]/.test(inputVal);
+    let passStrength = 0;
+    if (lower){
+        passStrength += 25;
+        document.querySelector('#percent').innerHTML = passStrength;
+    }
+    if (upper) {
+        passStrength += 25;
+        document.querySelector('#percent').innerHTML = passStrength;
+    }
+    if (digit) {
+        passStrength += 25;
+        document.querySelector('#percent').innerHTML = passStrength;
+    }
+    if (specialChar) {
+        passStrength += 25;
+        document.querySelector('#percent').innerHTML = passStrength;
+    }
+    
+    document.querySelector('#percent').innerHTML += '%';
+
+
+    let percentage = document.querySelector('#percent').innerHTML;
+
+    if (percentage === '25%'){
+        document.querySelector('.progressBar').style.background = 'red';
+        document.querySelector('.progressBar').style.width = percentage;
+    }
+    if (percentage === '50%'){
+        document.querySelector('.progressBar').style.background = '#FAD054';
+        document.querySelector('.progressBar').style.width = percentage;
+    }
+    if (percentage === '75%'){
+        document.querySelector('.progressBar').style.background = 'blue';
+        document.querySelector('.progressBar').style.width = percentage;
+    }
+    if (percentage === '100%'){
+        document.querySelector('.progressBar').style.background = 'green';
+        document.querySelector('.progressBar').style.width = percentage;
+    }
+    
+}
+document.querySelector('#input').addEventListener('keyup', passwordLength);
+
+const clickToCheck = (event) => {
+    event.preventDefault();
+    inputVal = document.querySelector('#input').value;
+
+    if(!inputVal.includes(' ') && inputVal.length > 5 && inputVal.length <= 12) {
+        document.querySelector('#percent').style.color = '#000000';
+    }
+}
+document.querySelector('button').addEventListener('click', clickToCheck);
+    </script>
+</body>
+</html>
